@@ -8,5 +8,6 @@ namespace PrivateSchoolsManagement.Interfaces
         Task CreateSchoolAsync(SchoolDTO schoolDTO);
         Task<List<SchoolDTO>> GetAllSchoolsAsync();
         Task<SchoolDTO> GetSchoolByIdAsync(int id);
+        Task UpdateSchoolAsync(int id, SchoolDTO schoolDTO);
     }
 }

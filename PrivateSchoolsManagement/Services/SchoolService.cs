@@ -35,5 +35,19 @@ namespace PrivateSchoolsManagement.Services
             var school = await _dbContext.Schools.FindAsync(id);
             return _mapper.Map<SchoolDTO>(school);
         }
+
+        public async Task UpdateSchoolAsync(int id, SchoolDTO schoolDTO)
+        {
+            var school = await _dbContext.Schools.FindAsync(id);
+
+            if (school == null)
+            {
+                throw new NotFoundException($"School with id {id} not found");
+            }
+
+            _mapper.Map(schoolDTO, school);
+
+            await _dbContext.SaveChangesAsync();
+        }
     }
 }

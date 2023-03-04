@@ -1,6 +1,11 @@
+using Microsoft.EntityFrameworkCore;
+using PrivateSchoolsManagement.Models;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddDbContext<SchoolsManagementDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("MyDbContext")));
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

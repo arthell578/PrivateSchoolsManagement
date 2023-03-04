@@ -1,9 +1,10 @@
-﻿using PrivateSchoolsManagement.Models;
+﻿using PrivateSchoolsManagement.DTOs;
+using PrivateSchoolsManagement.Models;
 
 namespace PrivateSchoolsManagement.Interfaces
 {
     public interface ISchoolService
     {
-        Task CreateSchoolAsync(School school);
+        Task CreateSchoolAsync(SchoolDTO schoolDTO);
     }
 }

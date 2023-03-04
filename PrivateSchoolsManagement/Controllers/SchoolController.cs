@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using PrivateSchoolsManagement.DTOs;
 using PrivateSchoolsManagement.Models;
 using PrivateSchoolsManagement.Services;
 
@@ -16,11 +17,11 @@ namespace PrivateSchoolsManagement.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<School>> CreateSchool(School school)
+        public async Task<ActionResult<School>> CreateSchool(SchoolDTO schoolDTO)
         {
-            await _schoolService.CreateSchoolAsync(school);
+            await _schoolService.CreateSchoolAsync(schoolDTO);
 
-            return CreatedAtAction("GetSchool", new { id = school.Id }, school);
+            return CreatedAtAction("GetSchool", new { id = schoolDTO.Id }, schoolDTO);
         }
 
 

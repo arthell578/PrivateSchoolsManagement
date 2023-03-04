@@ -26,9 +26,16 @@ namespace PrivateSchoolsManagement.Controllers
 
 
         [HttpGet]
-        public IActionResult GetAllSchools()
+        public async Task<ActionResult<List<SchoolDTO>>> GetAllSchools()
         {
-            return Ok();
+            var schools = await _schoolService.GetAllSchoolsAsync();
+
+            if (schools == null || schools.Count == 0)
+            {
+                return NoContent();
+            }
+
+            return Ok(schools);
         }
 
         [HttpGet("{id}")]

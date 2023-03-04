@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using PrivateSchoolsManagement.DTOs;
 using PrivateSchoolsManagement.Interfaces;
 using PrivateSchoolsManagement.Models;
@@ -21,6 +22,12 @@ namespace PrivateSchoolsManagement.Services
             var school = _mapper.Map<School>(schoolDTO);
             await _dbContext.Schools.AddAsync(school);
             await _dbContext.SaveChangesAsync();
+        }
+
+        public async Task<List<SchoolDTO>> GetAllSchoolsAsync()
+        {
+            var schools = await _dbContext.Schools.ToListAsync();
+            return _mapper.Map<List<SchoolDTO>>(schools);
         }
     }
 }

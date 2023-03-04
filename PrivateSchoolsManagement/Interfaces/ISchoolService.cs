@@ -6,5 +6,6 @@ namespace PrivateSchoolsManagement.Interfaces
     public interface ISchoolService
     {
         Task CreateSchoolAsync(SchoolDTO schoolDTO);
+        Task<List<SchoolDTO>> GetAllSchoolsAsync();
     }
 }

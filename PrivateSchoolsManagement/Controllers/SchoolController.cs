@@ -5,7 +5,7 @@ using PrivateSchoolsManagement.Services;
 
 namespace PrivateSchoolsManagement.Controllers
 {
-    [Route("api/schools")]
+    [Route("api/school")]
     [ApiController]
     public class SchoolController : ControllerBase
     {

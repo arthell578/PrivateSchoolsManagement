@@ -50,5 +50,18 @@ namespace PrivateSchoolsManagement.Services
 
             await _dbContext.SaveChangesAsync();
         }
+
+        public async Task DeleteSchoolAsync(int id)
+        {
+            var school = await _dbContext.Schools.FindAsync(id);
+
+            if (school == null)
+            {
+                throw new NotFoundException($"School with id {id} not found.");
+            }
+
+            _dbContext.Schools.Remove(school);
+            await _dbContext.SaveChangesAsync();
+        }
     }
 }

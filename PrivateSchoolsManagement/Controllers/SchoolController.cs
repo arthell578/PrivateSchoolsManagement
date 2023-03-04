@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PrivateSchoolsManagement.DTOs;
+using PrivateSchoolsManagement.Exceptions;
 using PrivateSchoolsManagement.Models;
 using PrivateSchoolsManagement.Services;
 
@@ -52,15 +53,38 @@ namespace PrivateSchoolsManagement.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult UpdateSchool(int id, School school)
+        public async Task<IActionResult> UpdateSchool(int id, SchoolDTO schoolDTO)
         {
-            return Ok();
+            try
+            {
+                await _schoolService.UpdateSchoolAsync(id, schoolDTO);
+
+                var updatedSchool = await _schoolService.GetSchoolByIdAsync(id);
+
+                return Ok(updatedSchool);
+            }
+            catch (NotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
 
         [HttpDelete("{id}")]
-        public IActionResult DeleteSchool(int id)
+        public async Task<IActionResult> DeleteSchool(int id)
         {
-            return Ok();
+            try
+            {
+                await _schoolService.DeleteSchoolAsync(id);
+                return NoContent();
+            }
+            catch (NotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
         }
     }
 

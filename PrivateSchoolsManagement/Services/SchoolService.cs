@@ -2,7 +2,7 @@
 
 namespace PrivateSchoolsManagement.Services
 {
-    public class SchoolService
+    public class SchoolService : ISchoolService
     {
         private readonly SchoolsManagementDbContext _dbContext;
 

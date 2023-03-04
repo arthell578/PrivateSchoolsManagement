@@ -21,19 +21,16 @@ namespace PrivateSchoolsManagement.Models
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // Configure one-to-many relationship between Teacher and Class
-            modelBuilder.Entity<Teacher>()
-                .HasMany(t => t.Classes)
-                .WithOne(c => c.Teacher)
-                .HasForeignKey(c => c.TeacherId)
-                .OnDelete(DeleteBehavior.Cascade);
+            // modelBuilder.Entity<Teacher>()
+            //     .HasMany(t => t.Classes)
+            //     .WithOne(c => c.Teacher)
+            //     .HasForeignKey(c => c.TeacherId)
+            //     .OnDelete(DeleteBehavior.Cascade);
 
-            modelBuilder.Entity<Student>()
-               .HasOne<Class>(s => s.Class)
-               .WithMany(c => c.Students)
-               .HasForeignKey(s => s.ClassId);
-
-            modelBuilder.Entity<Student>()
-                .Ignore(s => s.Classes);
+            modelBuilder.Entity<Class>()
+                .HasMany(c => c.Students)
+                .WithOne(s => s.Class)
+                .HasForeignKey(s => s.ClassId);
 
             modelBuilder.Entity<Class>()
                 .HasOne(c => c.Subject)
@@ -42,14 +39,14 @@ namespace PrivateSchoolsManagement.Models
                 .OnDelete(DeleteBehavior.Cascade);
 
             // Configure many-to-many relationship between Class and Student
-            modelBuilder.Entity<Class>()
-                .HasMany(c => c.Students)
-                .WithMany(s => s.Classes)
-                .UsingEntity<Dictionary<string, object>>(
-                    "ClassStudent",
-                    j => j.HasOne<Student>().WithMany().HasForeignKey("StudentId"),
-                    j => j.HasOne<Class>().WithMany().HasForeignKey("ClassId"),
-                    j => j.HasKey("ClassId", "StudentId"));
+            // modelBuilder.Entity<Class>()
+            //     .HasMany(c => c.Students)
+            //     .WithMany(s => s.Classes)
+            //     .UsingEntity<Dictionary<string, object>>(
+            //         "ClassStudent",
+            //         j => j.HasOne<Student>().WithMany().HasForeignKey("StudentId"),
+            //         j => j.HasOne<Class>().WithMany().HasForeignKey("ClassId"),
+            //         j => j.HasKey("ClassId", "StudentId"));
 
             // Configure one-to-many relationship between Class and Grade
             modelBuilder.Entity<Class>()
@@ -61,7 +58,6 @@ namespace PrivateSchoolsManagement.Models
             // Configure composite key for Grade entity
             modelBuilder.Entity<Grade>()
                 .HasKey(g => new { g.ClassId, g.StudentId });
-
         }
     }
 }

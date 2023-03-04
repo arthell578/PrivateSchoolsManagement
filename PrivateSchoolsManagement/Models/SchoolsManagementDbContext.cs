@@ -27,6 +27,14 @@ namespace PrivateSchoolsManagement.Models
                 .HasForeignKey(c => c.TeacherId)
                 .OnDelete(DeleteBehavior.Cascade);
 
+            modelBuilder.Entity<Student>()
+               .HasOne<Class>(s => s.Class)
+               .WithMany(c => c.Students)
+               .HasForeignKey(s => s.ClassId);
+
+            modelBuilder.Entity<Student>()
+                .Ignore(s => s.Classes);
+
             modelBuilder.Entity<Class>()
                 .HasOne(c => c.Subject)
                 .WithOne()

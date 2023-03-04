@@ -29,5 +29,11 @@ namespace PrivateSchoolsManagement.Services
             var schools = await _dbContext.Schools.ToListAsync();
             return _mapper.Map<List<SchoolDTO>>(schools);
         }
+
+        public async Task<SchoolDTO> GetSchoolByIdAsync(int id)
+        {
+            var school = await _dbContext.Schools.FindAsync(id);
+            return _mapper.Map<SchoolDTO>(school);
+        }
     }
 }

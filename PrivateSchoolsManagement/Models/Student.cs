@@ -22,5 +22,8 @@ namespace PrivateSchoolsManagement.Models
 
         [ForeignKey("ClassId")]
         public Class Class { get; set; }
+
+        public ICollection<Class> Classes { get; set; }
+        public ICollection<Grade> Grades { get; set; }
     }
 }

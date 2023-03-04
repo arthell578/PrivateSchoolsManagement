@@ -124,9 +124,7 @@ namespace PrivateSchoolsManagement.Migrations
                 {
                     ClassId = table.Column<int>(type: "int", nullable: false),
                     StudentId = table.Column<int>(type: "int", nullable: false),
-                    Id = table.Column<int>(type: "int", nullable: false),
-                    Value = table.Column<int>(type: "int", nullable: false),
-                    Note = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false)
+                    GradeValue = table.Column<double>(type: "float", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -142,7 +140,8 @@ namespace PrivateSchoolsManagement.Migrations
                         column: x => x.StudentId,
                         principalTable: "Students",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        // Remove the cascade behavior here
+                        onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.CreateIndex(

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using PrivateSchoolsManagement.DTOs;
+using PrivateSchoolsManagement.Exceptions;
 using PrivateSchoolsManagement.Interfaces;
 using PrivateSchoolsManagement.Models;
 

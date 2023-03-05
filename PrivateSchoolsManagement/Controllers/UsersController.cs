@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using PrivateSchoolsManagement.Exceptions;
 using PrivateSchoolsManagement.Interfaces;
 using PrivateSchoolsManagement.Models;
 using System.Data;
@@ -19,106 +20,89 @@ namespace PrivateSchoolsManagement.Controllers
             _userService = userService;
         }
 
-        [AllowAnonymous]
+        [HttpPost("register")]
+        public async Task<IActionResult> Register(User user)
+        {
+            try
+            {
+                var result = await _userService.CreateUserAsync(user);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
         [HttpPost("authenticate")]
-        public async Task<IActionResult> AuthenticateAsync(LoginModel model)
+        public async Task<IActionResult> Authenticate(User user)
         {
-            var user = await _userService.AuthenticateAsync(model.Username, model.Password);
-
-            if (user == null)
+            try
             {
-                return BadRequest(new { message = "Username or password is incorrect" });
+                var result = await _userService.AuthenticateUserAsync(user);
+                return Ok(result);
             }
-
-            var claims = new[]
+            catch (Exception ex)
             {
-            new System.Security.Claims.Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-            new System.Security.Claims.Claim(ClaimTypes.Name, user.Username),
-            new System.Security.Claims.Claim(ClaimTypes.Role, user.Role)
-        };
-
-            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new System.Security.Claims.ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme));
-
-            return Ok(user);
+                return BadRequest(ex.Message);
+            }
         }
 
-        [Authorize(Roles = "Admin")]
-        [HttpGet]
-        public async Task<IActionResult> GetAllAsync()
-        {
-            var users = await _userService.GetAllAsync();
-            return Ok(users);
-        }
-
-        [Authorize(Roles = "Admin")]
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetByIdAsync(int id)
-        {
-            var user = await _userService.GetByIdAsync(id);
-            if (user == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(user);
-        }
-
-        [AllowAnonymous]
-        [HttpPost]
-        public async Task<IActionResult> CreateAsync([FromBody] User user)
+        [Authorize(Roles = "Admin, Owner, Teacher")]
+        public async Task<IActionResult> GetUserById(int id)
         {
             try
             {
-                var createdUser = await _userService.CreateAsync(user);
-                return CreatedAtAction(nameof(GetByIdAsync), new { id = createdUser.Id }, createdUser);
+                var result = await _userService.GetUserByIdAsync(id);
+                return Ok(result);
             }
-            catch (AppException ex)
+            catch (NotFoundException ex)
             {
-                return BadRequest(new { message = ex.Message });
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
             }
         }
 
-        [Authorize(Roles = "Owner,Admin")]
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateAsync(int id, [FromBody] User user)
+        [Authorize(Roles = "Admin, Owner")]
+        public async Task<IActionResult> UpdateUser(int id, User user)
         {
-            // only allow admins to update other user records
-            if (id != user.Id && !User.IsInRole("Admin"))
-            {
-                return Forbid();
-            }
-
             try
             {
-                var updatedUser = await _userService.UpdateAsync(user);
-                return Ok(updatedUser);
+                await _userService.UpdateUserAsync(id, user);
+                return NoContent();
             }
-            catch (AppException ex)
+            catch (NotFoundException ex)
             {
-                return BadRequest(new { message = ex.Message });
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
             }
         }
 
-        [Authorize(Roles = "Owner,Admin")]
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteAsync(int id)
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> DeleteUser(int id)
         {
-            // only allow admins to delete user records
-            if (!User.IsInRole("Admin"))
+            try
             {
-                return Forbid();
+                await _userService.DeleteUserAsync(id);
+                return NoContent();
             }
-
-            await _userService.DeleteAsync(id);
-            return NoContent();
-        }
-
-        [AllowAnonymous]
-        [HttpPost("logout")]
-        public async Task<IActionResult> LogoutAsync()
-        {
-            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            return Ok();
+            catch (NotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }

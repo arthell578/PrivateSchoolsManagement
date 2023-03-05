@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using PrivateSchoolsManagement.DTOs;
 using PrivateSchoolsManagement.Exceptions;
 using PrivateSchoolsManagement.Helpers;
@@ -44,20 +45,19 @@ namespace PrivateSchoolsManagement.Services
             return _mapper.Map<List<UserDTO>>(users);
         }
 
-        public async Task<UserDTO> UpdateUserAsync(int userId, UserDTO userDTO)
+        public async Task<UserDTO> UpdateUserAsync(int userId, User user)
         {
-            var user = await _dbContext.Users.FindAsync(userId);
-            if (user == null)
+            var updatedUser = await _dbContext.Users.FindAsync(userId);
+            if (updatedUser == null)
             {
                 throw new NotFoundException($"User with id {userId} not found.");
             }
-            _mapper.Map(userDTO, user);
-            if (!string.IsNullOrEmpty(userDTO.Password))
+            if (!string.IsNullOrEmpty(user.Password))
             {
-                user.PasswordHash = PasswordHelper.HashPassword(userDTO.Password);
+                updatedUser.PasswordHash = PasswordHelper.HashPassword(user.Password);
             }
             await _dbContext.SaveChangesAsync();
-            return _mapper.Map<UserDTO>(user);
+            return _mapper.Map<UserDTO>(updatedUser);
         }
 
         public async Task DeleteUserAsync(int userId)

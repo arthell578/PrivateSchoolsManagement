@@ -1,11 +1,13 @@
 ﻿using AutoMapper;
+using PrivateSchoolsManagement.DTOs;
 using PrivateSchoolsManagement.Exceptions;
 using PrivateSchoolsManagement.Helpers;
+using PrivateSchoolsManagement.Interfaces;
 using PrivateSchoolsManagement.Models;
 
 namespace PrivateSchoolsManagement.Services
 {
-    public class UserService
+    public class UserService : IUserService
     {
 
         private readonly SchoolsManagementDbContext _dbContext;
@@ -17,13 +19,13 @@ namespace PrivateSchoolsManagement.Services
             _mapper = mapper;
         }
 
-        public async Task<UserDTO> CreateUserAsync(UserDTO userDTO)
+        public async Task<UserDTO> CreateUserAsync(User user)
         {
-            var user = _mapper.Map<User>(userDTO);
-            user.PasswordHash = PasswordHelper.HashPassword(userDTO.Password);
-            await _dbContext.Users.AddAsync(user);
+            var newUser = _mapper.Map<User>(user);
+            newUser.PasswordHash = PasswordHelper.HashPassword(user.Password);
+            await _dbContext.Users.AddAsync(newUser);
             await _dbContext.SaveChangesAsync();
-            return _mapper.Map<UserDTO>(user);
+            return _mapper.Map<UserDTO>(newUser);
         }
 
         public async Task<UserDTO> GetUserByIdAsync(int userId)

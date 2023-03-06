@@ -12,12 +12,10 @@ namespace PrivateSchoolsManagement.Controllers
     public class UsersController : Controller
     {
         private readonly IUserService _userService;
-        private readonly IAuthenticationService _authenticationService;
 
-        public UsersController(IUserService userService, IAuthenticationService authenticationService)
+        public UsersController(IUserService userService)
         {
             _userService = userService;
-            _authenticationService = authenticationService;
         }
 
         [HttpPost("register")]
@@ -39,7 +37,7 @@ namespace PrivateSchoolsManagement.Controllers
         {
             try
             {
-                var result = await _userService.Authenticate(user);
+                var result = _userService.Authenticate(user);
                 return Ok(result);
             }
             catch (Exception ex)

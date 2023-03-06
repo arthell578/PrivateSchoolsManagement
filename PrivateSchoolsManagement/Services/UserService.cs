@@ -24,7 +24,7 @@ namespace PrivateSchoolsManagement.Services
         public async Task<UserDTO> CreateUserAsync(User user)
         {
             var newUser = _mapper.Map<User>(user);
-            newUser.PasswordHash = PasswordHelper.HashPassword(user.Password);
+            newUser.PasswordHash = BCrypt.Net.BCrypt.HashPassword(user.Password);
             await _dbContext.Users.AddAsync(newUser);
             await _dbContext.SaveChangesAsync();
             return _mapper.Map<UserDTO>(newUser);
@@ -55,7 +55,7 @@ namespace PrivateSchoolsManagement.Services
             }
             if (!string.IsNullOrEmpty(user.Password))
             {
-                updatedUser.PasswordHash = PasswordHelper.HashPassword(user.Password);
+                updatedUser.PasswordHash = BCrypt.Net.BCrypt.HashPassword(user.Password);
             }
             await _dbContext.SaveChangesAsync();
             return _mapper.Map<UserDTO>(updatedUser);

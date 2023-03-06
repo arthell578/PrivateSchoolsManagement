@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using BCrypt.Net;
 using Microsoft.EntityFrameworkCore;
 using PrivateSchoolsManagement.DTOs;
 using PrivateSchoolsManagement.Exceptions;
@@ -70,5 +71,17 @@ namespace PrivateSchoolsManagement.Services
             _dbContext.Users.Remove(user);
             await _dbContext.SaveChangesAsync();
         }
+
+        public bool Authenticate(User user)
+        {
+            var authUser = _dbContext.Users.SingleOrDefault(x => x.Email == user.Email);
+            if (user == null || !BCrypt.Net.BCrypt.Verify(user.Password,user.PasswordHash))
+            {
+                return false;
+            }
+
+            return true;
+        }
+
     }
 }

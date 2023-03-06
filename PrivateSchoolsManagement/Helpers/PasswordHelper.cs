@@ -4,28 +4,21 @@ namespace PrivateSchoolsManagement.Helpers
 {
     public static class PasswordHelper
     {
-        public static string HashPassword(string password)
+        public static string HashPassword(string password, out byte[] salt)
         {
             // Generate a random salt value
-            byte[] salt = new byte[16];
+            salt = new byte[16];
             new RNGCryptoServiceProvider().GetBytes(salt);
 
             // Hash the password using Bcrypt with the salt
-            string hashedPassword = BCrypt.Net.BCrypt.HashPassword(password, salt);
+            string hashedPassword = BCrypt.Net.BCrypt.HashPassword(password, BCrypt.Net.SaltRevision.Revision2B, salt);
 
-            // Combine the salt and hash values into a single string
-            string saltString = Convert.ToBase64String(salt);
-            return $"{saltString}:{hashedPassword}";
+            return hashedPassword;
         }
-
-        public static bool VerifyPassword(string password, string hashedPassword)
+        public static bool VerifyPassword(string password, string hashedPassword, byte[] salt)
         {
-            // Extract the salt value from the stored hash value
-            string[] parts = hashedPassword.Split(':');
-            byte[] salt = Convert.FromBase64String(parts[0]);
-
             // Hash the password using Bcrypt with the same salt
-            string hash = BCrypt.Net.BCrypt.HashPassword(password, salt);
+            string hash = BCrypt.Net.BCrypt.HashPassword(password, BCrypt.Net.SaltRevision.Revision2B, salt);
 
             // Compare the resulting hash value with the stored hash value
             return hash == hashedPassword;

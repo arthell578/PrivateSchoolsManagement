@@ -5,6 +5,7 @@ using PrivateSchoolsManagement.Exceptions;
 using PrivateSchoolsManagement.Interfaces;
 using PrivateSchoolsManagement.Models;
 using System.Data;
+using System.Net.NetworkInformation;
 using System.Security.Claims;
 
 namespace PrivateSchoolsManagement.Controllers

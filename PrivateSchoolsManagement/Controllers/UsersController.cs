@@ -39,8 +39,7 @@ namespace PrivateSchoolsManagement.Controllers
         {
             try
             {
-                // there should be authentication service, not in user service
-                var result = await _authenticationService.AuthenticateAsync(user.Email,user.Password);
+                var result = await _userService.Authenticate(user);
                 return Ok(result);
             }
             catch (Exception ex)

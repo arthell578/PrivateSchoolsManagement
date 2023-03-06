@@ -1,12 +1,7 @@
-﻿using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
 using PrivateSchoolsManagement.Exceptions;
 using PrivateSchoolsManagement.Interfaces;
 using PrivateSchoolsManagement.Models;
-using System.Data;
-using System.Net.NetworkInformation;
-using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
 
 namespace PrivateSchoolsManagement.Controllers

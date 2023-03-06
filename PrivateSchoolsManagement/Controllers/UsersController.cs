@@ -7,6 +7,7 @@ using PrivateSchoolsManagement.Models;
 using System.Data;
 using System.Net.NetworkInformation;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Mvc;
 
 namespace PrivateSchoolsManagement.Controllers
 {

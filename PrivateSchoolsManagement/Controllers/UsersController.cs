@@ -3,18 +3,21 @@ using PrivateSchoolsManagement.Exceptions;
 using PrivateSchoolsManagement.Interfaces;
 using PrivateSchoolsManagement.Models;
 using Microsoft.AspNetCore.Mvc;
+using PrivateSchoolsManagement.Services;
 
 namespace PrivateSchoolsManagement.Controllers
 {
     [Route("api/account")]
     [ApiController]
-    public class UsersController
+    public class UsersController : Controller
     {
         private readonly IUserService _userService;
+        private readonly IAuthenticationService _authenticationService;
 
-        public UsersController(IUserService userService)
+        public UsersController(IUserService userService, IAuthenticationService authenticationService)
         {
             _userService = userService;
+            _authenticationService = authenticationService;
         }
 
         [HttpPost("register")]
@@ -37,7 +40,7 @@ namespace PrivateSchoolsManagement.Controllers
             try
             {
                 // there should be authentication service, not in user service
-                var result = await _userService.AuthenticateUserAsync(user);
+                var result = await _authenticationService.AuthenticateAsync(user.Email,user.Password);
                 return Ok(result);
             }
             catch (Exception ex)

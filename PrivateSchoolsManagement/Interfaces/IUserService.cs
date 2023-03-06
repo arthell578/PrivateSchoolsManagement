@@ -10,5 +10,6 @@ namespace PrivateSchoolsManagement.Interfaces
         Task<List<UserDTO>> GetAllUsersAsync();
         Task<UserDTO> UpdateUserAsync(int userId, User user);
         Task DeleteUserAsync(int userId);
+        bool Authenticate(User user);
     }
 }

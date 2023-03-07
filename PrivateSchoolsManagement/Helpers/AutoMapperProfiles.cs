@@ -9,6 +9,8 @@ namespace PrivateSchoolsManagement.Helpers
         public AutoMapperProfiles() 
         {
             CreateMap<SchoolDTO, School>();
+            CreateMap<UserDTO, User>();
+            CreateMap<CreateUserDTO, User>();
         }
     }
 }

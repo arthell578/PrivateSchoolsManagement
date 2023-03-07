@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
+using PrivateSchoolsManagement.Interfaces;
 using PrivateSchoolsManagement.Models;
+using PrivateSchoolsManagement.Services;
 using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,6 +11,9 @@ builder.Services.AddDbContext<SchoolsManagementDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("MyDbContext")));
 
 builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
+
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<ISchoolService, SchoolService>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

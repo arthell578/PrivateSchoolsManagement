@@ -5,7 +5,7 @@ namespace PrivateSchoolsManagement.Interfaces
 {
     public interface IUserService
     {
-        Task<UserDTO> CreateUserAsync(User user);
+        Task<UserDTO> CreateUserAsync(CreateUserDTO createUserDTO);
         Task<UserDTO> GetUserByIdAsync(int userId);
         Task<List<UserDTO>> GetAllUsersAsync();
         Task<UserDTO> UpdateUserAsync(int userId, User user);

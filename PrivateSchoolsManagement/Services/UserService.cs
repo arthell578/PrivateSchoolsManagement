@@ -21,10 +21,10 @@ namespace PrivateSchoolsManagement.Services
             _mapper = mapper;
         }
 
-        public async Task<UserDTO> CreateUserAsync(User user)
+        public async Task<UserDTO> CreateUserAsync(CreateUserDTO createUserDTO)
         {
-            var newUser = _mapper.Map<User>(user);
-            newUser.PasswordHash = BCrypt.Net.BCrypt.HashPassword(user.Password);
+            var newUser = _mapper.Map<User>(createUserDTO);
+            newUser.PasswordHash = BCrypt.Net.BCrypt.HashPassword(createUserDTO.Password);
             await _dbContext.Users.AddAsync(newUser);
             await _dbContext.SaveChangesAsync();
             return _mapper.Map<UserDTO>(newUser);

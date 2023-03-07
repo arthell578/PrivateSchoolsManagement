@@ -4,6 +4,7 @@ using PrivateSchoolsManagement.Interfaces;
 using PrivateSchoolsManagement.Models;
 using Microsoft.AspNetCore.Mvc;
 using PrivateSchoolsManagement.Services;
+using PrivateSchoolsManagement.DTOs;
 
 namespace PrivateSchoolsManagement.Controllers
 {
@@ -19,11 +20,11 @@ namespace PrivateSchoolsManagement.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> Register(User user)
+        public async Task<IActionResult> Register(CreateUserDTO createUserDTO)
         {
             try
             {
-                var result = await _userService.CreateUserAsync(user);
+                var result = await _userService.CreateUserAsync(createUserDTO);
                 return Ok(result);
             }
             catch (Exception ex)

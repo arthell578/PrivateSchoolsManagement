@@ -13,4 +13,3 @@ namespace PrivateSchoolsManagement.Models
         public virtual Role Role{ get; set; }
     }
 }
-

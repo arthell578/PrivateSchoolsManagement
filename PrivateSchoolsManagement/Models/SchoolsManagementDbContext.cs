@@ -27,7 +27,10 @@ namespace PrivateSchoolsManagement.Models
             //     .HasMany(t => t.Classes)
             //     .WithOne(c => c.Teacher)
             //     .HasForeignKey(c => c.TeacherId)
-            //     .OnDelete(DeleteBehavior.Cascade);
+            //     .OnDelete(DeleteBehavior.Cascade)
+            modelBuilder.Entity<User>
+                .Property(u => u.Email)
+                .Required();
 
             modelBuilder.Entity<Class>()
                 .HasMany(c => c.Students)
